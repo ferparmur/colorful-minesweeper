@@ -1,15 +1,17 @@
 import {generateRandomNumbers} from "./utils.ts";
+import {CellType} from "../types/CellType.ts";
+
 
 export default class BoardObj {
     private readonly numberOfRows: number;
     private readonly numberOfCols: number;
     private readonly numberOfCells: number;
-    private minedCells: Array<number>;
+    private minedCells: number[];
     private readonly numberOfMines: number;
-    private _board;
+    private _board: CellType[];
     private gameState: string = '';
 
-    constructor(numberOfCols: number, numberOfRows: number, numberOfMines: number, board = null, gameState = 'new', minedCells: Array<number> = []) {
+    constructor(numberOfCols: number, numberOfRows: number, numberOfMines: number, board: CellType[] | null = null, gameState = 'new', minedCells: Array<number> = []) {
         this.gameState = gameState;
         this.numberOfCols = numberOfCols;
         this.numberOfRows = numberOfRows;

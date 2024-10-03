@@ -5,7 +5,6 @@ export function generateRandomNumbers(length: number, max: number, exclude: Arra
         if (!exclude.includes(randomNum)) {
             //TODO: make this good and not brute force
             randomNumbers.add(randomNum);
-        } else {
         }
     }
     return Array.from(randomNumbers);
