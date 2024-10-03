@@ -1,0 +1,145 @@
+@use 'sass:math';
+@use 'sass:color';
+
+@function hex-to-p3($hex-color, $alpha: 1) {
+    // Directly use the hex color to extract R, G, B components
+    $r: math.div(color.channel($hex-color, "red"), 255);
+    $g: math.div(color.channel($hex-color, "green"), 255);
+    $b: math.div(color.channel($hex-color, "blue"), 255);
+
+    // Use interpolation to prevent Sass from interpreting `/` as division
+    @return unquote("color(display-p3 #{$r} #{$g} #{$b} / #{$alpha})");
+}
+
+
+:root {
+    --color-bg: #16191C;
+    --color-fg: #F1F4F6;
+
+    --color-indicator-cover: #31363a;
+    --color-indicator-flag: #5e7588;
+    --color-indicator-mine: #7a9cb1;
+    --color-indicator-empty: #003344;
+    --color-indicator-explosion: #ff0000;
+    --color-indicator-1: #00C0FF;
+    --color-indicator-2: #00DC8A;
+    --color-indicator-3: #FF4F4A;
+    --color-indicator-4: #3A45D8;
+    --color-indicator-5: #EF4788;
+    --color-indicator-6: #fbcb07;
+    --color-indicator-7: #8807ff;
+    --color-indicator-8: #8cff00;
+
+    --font: 'Helvetica', 'Arial', sans-serif;
+}
+
+/* Display-P3 color, when supported. */
+@supports (color: color(display-p3 1 1 1)) {
+    :root {
+        --color-indicator-cover: #{hex-to-p3(#31363a)};
+        --color-indicator-flag: #{hex-to-p3(#5e7588)};
+        --color-indicator-mine: #{hex-to-p3(#7a9cb1)};
+        --color-indicator-empty: #{hex-to-p3(#003344)};
+        --color-indicator-explosion: #{hex-to-p3(#ff0000)};
+        --color-indicator-1: #{hex-to-p3(#00C0FF)};
+        --color-indicator-2: #{hex-to-p3(#00DC8A)};
+        --color-indicator-3: #{hex-to-p3(#FF4F4A)};
+        --color-indicator-4: #{hex-to-p3(#3A45D8)};
+        --color-indicator-5: #{hex-to-p3(#EF4788)};
+        --color-indicator-6: #{hex-to-p3(#fbcb07)};
+        --color-indicator-7: #{hex-to-p3(#8807ff)};
+        --color-indicator-8: #{hex-to-p3(#8cff00)};
+    }
+}
+
+body {
+    background: var(--color-bg);
+    color: var(--color-fg);
+    margin: 0;
+    font-family: 'Jost', sans-serif;
+}
+
+.board {
+    --board-width: 1000px;
+    --board-gap: calc(var(--board-width) * .005);
+    --cell-width: calc((var(--board-width) - (var(--columns) * var(--board-gap))) / var(--columns));
+    font-family: var(--font), sans-serif;
+
+    display: grid;
+    width: var(--board-width);
+    grid-template-columns: repeat(var(--columns), var(--cell-width));
+    grid-template-rows: repeat(var(--rows), var(--cell-width));
+    gap: var(--board-gap);
+}
+
+.cell {
+    appearance: none;
+    display: block;
+    background-color: var(--color-indicator-cover);
+    padding: 0;
+    border: none;
+    aspect-ratio: 1;
+    font-size: calc(var(--board-width) * .02);
+    font-family: var(--font), sans-serif;
+    color: var(--color-fg);
+    font-weight: 700;
+    text-align: center;
+    align-content: center;
+    border-radius: calc(var(--board-width) * .005);
+    transition: all 0.25s;
+
+    &.open {
+        background-color: transparent;
+    }
+
+    &.indicator-1 {
+        background-color: var(--color-indicator-1);
+    }
+
+    &.indicator-2 {
+        background-color: var(--color-indicator-2);
+    }
+
+    &.indicator-3 {
+        background-color: var(--color-indicator-3);
+    }
+
+    &.indicator-4 {
+        background-color: var(--color-indicator-4);
+    }
+
+    &.indicator-5 {
+        background-color: var(--color-indicator-5);
+    }
+
+    &.indicator-6 {
+        background-color: var(--color-indicator-6);
+    }
+
+    &.indicator-7 {
+        background-color: var(--color-indicator-7);
+    }
+
+    &.indicator-8 {
+        background-color: var(--color-indicator-8);
+    }
+
+    &.indicator-explosion {
+        background-color: var(--color-indicator-explosion);
+        border-radius: 100%;
+        box-shadow: 0 0 0 calc(var(--board-width) * .0035) var(--color-fg);
+        font-family: 'Arial', sans-serif;
+    }
+
+    &.indicator-flag {
+        background-color: var(--color-indicator-flag);
+        border: calc(var(--board-width) * .0025) solid var(--color-fg);
+        font-family: 'Arial', sans-serif;
+    }
+
+    &.indicator-mine {
+        background-color: var(--color-indicator-mine);
+        border-radius: 100%;
+        font-family: 'Arial', sans-serif;
+    }
+}
